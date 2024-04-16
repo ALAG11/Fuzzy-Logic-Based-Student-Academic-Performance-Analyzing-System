@@ -1,31 +1,37 @@
+# Defining and importing necessary libraries
 import numpy as np
 import skfuzzy as fuzz
 from skfuzzy import control as ctrl
 
-# Define the linguistic variables and their membership functions
+# Defining the linguistic variables
 ATTENDANCE = 'Attendance'
 PERFORMANCE = 'Performance'
 INTERNAL_MARKS = 'Internal_Marks'
 EXTERNAL_MARKS = 'External_Marks'
+
+# Defining the membership functions for the linguistic variables
 POOR = 'Poor'
 AVERAGE = 'Average'
 GOOD = 'Good'
 V_GOOD = 'V.Good'
 EXCELLENT = 'Excellent'
+
 low_parameter = [0, 0, 40, 50]
 average_parameter = [30, 40, 50, 60]
 good_parameter = [40, 50, 60, 70]
 v_good_parameter = [50, 60, 70, 80]
 excellent_parameter = [65, 80, 100, 100]
 
+# Function to compute the fuzzy performance defined
 def compute_fuzzy(attend, intr_mark, extn_mark):
-    # Define the antecedents and consequent with their universes
+
+    # Defining the antecedents and consequent
     intrn_marks = ctrl.Antecedent(np.arange(0, 105, 5), INTERNAL_MARKS)
     attendance = ctrl.Antecedent(np.arange(0, 105, 5), ATTENDANCE)
     extrn_marks = ctrl.Antecedent(np.arange(0, 105, 5), EXTERNAL_MARKS)
     performance = ctrl.Consequent(np.arange(0, 105, 5), PERFORMANCE)
 
-    # Set the membership functions for the linguistic variables
+    # Setting the membership functions for the linguistic variables
     intrn_marks[POOR] = fuzz.trapmf(intrn_marks.universe, low_parameter)
     intrn_marks[AVERAGE] = fuzz.trapmf(intrn_marks.universe, average_parameter)
     intrn_marks[GOOD] = fuzz.trapmf(intrn_marks.universe, good_parameter)
@@ -50,7 +56,7 @@ def compute_fuzzy(attend, intr_mark, extn_mark):
     performance[V_GOOD] = fuzz.trapmf(performance.universe, v_good_parameter)
     performance[EXCELLENT] = fuzz.trapmf(performance.universe, excellent_parameter)
 
-    # Define the rules for the fuzzy control system
+    # Defining the fuzzy rules
     rule1 = ctrl.Rule(attendance[POOR] & extrn_marks[POOR] & intrn_marks[POOR], performance[POOR])
     rule2 = ctrl.Rule(attendance[POOR] & extrn_marks[AVERAGE] & intrn_marks[POOR], performance[POOR])
     rule3 = ctrl.Rule(attendance[POOR] & extrn_marks[GOOD] & intrn_marks[POOR], performance[AVERAGE])
@@ -95,20 +101,24 @@ def compute_fuzzy(attend, intr_mark, extn_mark):
     rule42 = ctrl.Rule(attendance[EXCELLENT] & extrn_marks[V_GOOD] & intrn_marks[EXCELLENT], performance[V_GOOD])
     rule43 = ctrl.Rule(attendance[EXCELLENT] & extrn_marks[EXCELLENT] & intrn_marks[EXCELLENT], performance[EXCELLENT])
 
-    # Create the fuzzy control system and simulation
+    # Creating a list of rules
     rule_list = [rule1, rule2, rule3, rule4, rule5, rule6, rule7, rule8, rule9, rule10, rule11, rule12, rule13, rule14, rule15, rule16, rule17, rule18, rule19, rule20, rule21, rule22, rule23, rule24, rule25, rule26, rule27, rule28, rule29, rule30, rule31, rule32, rule33, rule34, rule35, rule36, rule37, rule38, rule39, rule40, rule41, rule42, rule43]
+
+    # Creating control system using the rules
     performance_ctrl = ctrl.ControlSystem(rule_list)
+
+    # Creating simulation of the control system
     perf_analysis = ctrl.ControlSystemSimulation(performance_ctrl)
 
-    # Set the input values for the simulation
+    # Setting the input values for the simulation
     perf_analysis.input[ATTENDANCE] = attend
     perf_analysis.input[EXTERNAL_MARKS] = extn_mark
     perf_analysis.input[INTERNAL_MARKS] = intr_mark
 
-    # Compute the simulation
+    # Run the simulation
     perf_analysis.compute()
 
-    # Return the output of the simulation as a string
+    # Returning the output of the simulation as a string
     return str(perf_analysis.output[PERFORMANCE])
 
 # Example usage of the function
