@@ -1,5 +1,6 @@
 # Fuzzy Logic Based Student Academic Performance Analyzing System
-It is an analytical system for student academic performance based on fuzzy logic written in python programming language.
+
+It is an analytical system for student academic performance based on fuzzy logic written in python programming language. The system uses fuzzy logic to handle uncertainty and complexity in data. Fuzzy logic is a form of many-valued logic; it deals with reasoning that is approximate rather than fixed and exact. In contrast with traditional logic theory, where binary sets have two-valued logic: true or false, fuzzy logic variables may have a truth value that ranges in degree between 0 and 1. Fuzzy logic has been extended to handle the concept of partial truth, where the truth value may range between completely true and completely false.
 
 # To run this application in your system follow these steps:-
 
